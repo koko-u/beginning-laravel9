@@ -1,0 +1,39 @@
+version: '3.2'
+services:
+  php-dev:
+    image: "kokouu/php-dev:v2"
+    working_dir: /usr/workspace
+    volumes:
+      - type: bind
+        source: ./workspace
+        target: /usr/workspace
+      - type: volume
+        source: app-node-modules
+        target: /usr/workspace/contact-app/node_modules
+        volume:
+          nocopy: true
+    container_name: php-dev
+    tty: true
+    stdin_open: true
+  db:
+    image: "mysql:8.0.29-debian"
+    volumes:
+      - type: volume
+        source: db-data
+        target: /var/lib/mysql
+        volume:
+          nocopy: true
+    container_name: mysql-db
+    restart: always
+    ports:
+      - "13306:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: OF2DTcMAuddMFe
+      MYSQL_DATABASE: testdb
+      MYSQL_USER: user1
+      MYSQL_PASSWORD: JThowFewiFb8S
+    command: >
+      --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
+volumes:
+  db-data:
+  app-node-modules:
